@@ -6,6 +6,10 @@
         <label>{{ col.label }}</label>
       </span>
     </div>
+    <div class="content__search">
+      <label>Поиск...</label>
+      <input type="text" />
+    </div>
 
     <div class="content__main">
       <table class="content__main-table">
@@ -37,11 +41,12 @@ export default {
   name: 'Page',
   data() {
     return {
-      test:{
-        name:'Artem',
-        
-      },
       columns: [
+        {
+          label: '№ п/п',
+          code: 'id',
+          visible: true,
+        },
         {
           label: 'Имя',
           code: 'firstName',
@@ -80,18 +85,26 @@ export default {
       ],
     }
   },
+  async mounted() {
+   await this.$store.dispatch('loadPosts')
+    console.log(this.$store.getters.getPosts)
+  },
 }
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 .content {
-  height: 100px;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
   max-width: 800px;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &__header {
     width: 100%;
     height: 55px;
+    margin-top: 30px;
     border: 1px solid #fff;
     border-radius: 10px;
     display: flex;
@@ -102,14 +115,38 @@ export default {
       cursor: pointer;
     }
   }
+  &__search {
+    display: flex;
+    align-items: center;
+    margin-top: 30px;
+    max-width: 300px;
+    width: 100%;
+    input {
+      width: 100%;
+      height: 30px;
+      margin-left: 15px;
+      padding: 0 10px;
+      outline: none;
+    }
+  }
   &__main {
     width: 100%;
     height: 100%;
     margin-top: 30px;
     &-table {
       width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      border: 1px solid #fff;
+      th,
       td {
+        padding: 10px;
+        border: 1px solid #fff;
         text-align: center;
+      }
+      th:first-child,
+      td:first-child {
+        width: 70px;
       }
     }
   }
